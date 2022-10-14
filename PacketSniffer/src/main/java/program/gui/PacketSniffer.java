@@ -78,7 +78,7 @@ public class PacketSniffer {
     private DefaultTableModel tableModel;
 
     /**
-     * Запуск приложения.
+     * Запуск приложения. launch
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
