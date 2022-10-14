@@ -100,7 +100,7 @@ public class MonitorThread extends Thread {
                     logger.debug(packet.toString());
 
                     num++;
-                    if (num >= 1000) { /** максимальное значение для перехвата количества пакетов */
+                    if (num >= 1000) { /** максимальное значение для перехвата12 количества пакетов */
                       //btnStart.setEnabled(true);
                       //btnStop.setEnabled(false);
                         break;

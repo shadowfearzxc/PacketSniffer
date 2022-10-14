@@ -37,7 +37,7 @@ public class UpdateTextOutput extends Thread {
 
     @Override
     public void run() {
-int num = 0; /** счетчик пакетов */
+int num = 0; /** счетчик пакето0в */
         boolean changed = false;
 
         /** выполнение потока до тех пор, пока очередь не станет пустой*/

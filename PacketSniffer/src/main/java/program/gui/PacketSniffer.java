@@ -87,7 +87,7 @@ public class PacketSniffer {
                     PacketSniffer window = new PacketSniffer(); /** основной интерфейс */
                     window.frame.setVisible(true); /** включение-выключение отображения интерфейса, если false - не работает */
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    e.printStackTrace(); // error
                 }
             }
         });
