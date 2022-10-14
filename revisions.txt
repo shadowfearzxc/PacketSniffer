@@ -1,0 +1,7 @@
+> Java PacketSniffer revisions file.
+> [*] - Fixed/Changed/Updated, [+] - Added, [-] Removed.
+
+
+-- 14.10.2022 1:07 PM (v1.0.0)
+	[*] First launch
+	Errors : ~101 warnings ):
