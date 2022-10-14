@@ -2,7 +2,7 @@ package program.gui;
 
 public class ComboItem
 {
-    private final String key;
+    private String key;
     private String value;
 
     public ComboItem(String key, String value)

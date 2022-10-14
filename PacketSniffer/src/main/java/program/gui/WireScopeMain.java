@@ -58,15 +58,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class PacketSniffer {
+public class WireScopeMain {
 
-    final static Logger logger = LoggerFactory.getLogger(PacketSniffer.class);
+    final static Logger logger = LoggerFactory.getLogger(WireScopeMain.class);
     private List<PcapNetworkInterface> interfaces;
     private JFrame frame;
     private JTextField txtFilters;
-    private JComboBox<ComboItem> ddlInterfaces;
+    private JComboBox ddlInterfaces;
     private MonitorThread monitorThread;
-    private UpdateTextOutput updateTextOutputThread;
+    private UpdateTextOutput updateTextOutputThread; /** выводы*/
     //private boolean running;
     JPanel pnlData;
     JButton btnStart, btnStop; /** кнопки старт-стоп*/
@@ -74,20 +74,21 @@ public class PacketSniffer {
     JLabel lblFilePath = new JLabel("");
     JTextArea txtData;
 
+    private LinkedBlockingQueue<Packet> packetQueue;
     private JTable tblOutput;
     private DefaultTableModel tableModel;
 
     /**
-     * Запуск приложения. launch
+     * Запуск приложения.
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    PacketSniffer window = new PacketSniffer(); /** основной интерфейс */
+                    WireScopeMain window = new WireScopeMain(); /** основной интерфейс */
                     window.frame.setVisible(true); /** включение-выключение отображения интерфейса, если false - не работает */
                 } catch (Exception e) {
-                    e.printStackTrace(); // error
+                    e.printStackTrace();
                 }
             }
         });
@@ -96,7 +97,7 @@ public class PacketSniffer {
     /**
      * Создание приложения
      */
-    public PacketSniffer() { /** поиск всех возможный адаптеров и их вывод, работает библиоетка pcap4j */
+    public WireScopeMain() { /** поиск всех возможный адаптеров и их вывод, работает библиотека pcap4j */
         initialize();
         try {
             interfaces = org.pcap4j.core.Pcaps.findAllDevs();
@@ -115,13 +116,13 @@ public class PacketSniffer {
     }
 
     private void StartMonitoring() { /** после запуска, выводит IP адрес исполнительного адаптера */
-        LinkedBlockingQueue<Packet> packetQueue = new LinkedBlockingQueue<>();
+        packetQueue = new LinkedBlockingQueue<Packet>();
 
         try {
             PcapNetworkInterface inteface = interfaces.get(ddlInterfaces.getSelectedIndex());
 
             for (PcapAddress addr : inteface.getAddresses()) {
-                if (addr.getAddress() != null) { /** сам вывод исполнительного адаптера */
+                if (addr.getAddress() != null) { /** сам вывод адреса исполнительного адаптера */
                     logger.info("IP адрес: " + addr.getAddress());
                 }
             }
@@ -155,13 +156,13 @@ public class PacketSniffer {
         frame.setBounds(100, 100, 708, 496); /** выставление начальных размеров окна */
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); /** операция закрытия */
         frame.getContentPane().setLayout(new BorderLayout(0, 0)); /** панель содержимого */
-
+/** gitgub interface JPanel*/
         JPanel pnlSide = new JPanel(); /** объявление панели 1  для интерфейса. */
         pnlSide.setLayout(new BoxLayout(pnlSide, BoxLayout.Y_AXIS)); /** выстраивание панелей по Y (вертикаль) */
 
         JPanel panel_1 = new JPanel(); /** объявление панели 2 для интерфеса */
         pnlSide.add(panel_1);
-        panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS)); /** выставление списка адаптеров под кнопки с макетом */
+        panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS)); /** выставление списка адаптеров под кнопками с макетом */
 
         btnStart = new JButton("\u25B6");           /**значок стрелочки */
         btnStart.addActionListener(new ActionListener() {
@@ -196,13 +197,14 @@ public class PacketSniffer {
         JLabel lblInterface = new JLabel("Адаптеры: ");
         panel_2.add(lblInterface);
 
-        ddlInterfaces = new JComboBox<>();
+        ddlInterfaces = new JComboBox(); /** совмещение панелей */
         panel_2.add(ddlInterfaces);
 
         JPanel panel_3 = new JPanel(); /** не работает */
         pnlSide.add(panel_3);
 
-        { /**фильтры не работают P.S. сайт синтаксисов фильтров для работы с библиотекой
+        { /**фильтры не работают
+         P.S. сайт синтаксисов фильтров для работы с библиотекой
          http://biot.com/capstats/bpf.html*/
             //JLabel lblArguments = new JLabel("Фильтры");
             // panel_3.add(lblArguments);
@@ -213,11 +215,11 @@ public class PacketSniffer {
             // panel_3.add(lblArguments1);
         }
 
-        JPanel panel_4 = new JPanel(); /** создание панели для кнопок дамп файлов */
+        JPanel panel_4 = new JPanel(); /** создание панели для кнопки дамп файлов */
         pnlSide.add(panel_4);
 
         chkBoxDumpFile = new JCheckBox("Включить");
-        /** создание дамп файла */
+        /** выбор дамп файла */
         chkBoxDumpFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 if (chkBoxDumpFile.isSelected()) {
@@ -265,15 +267,14 @@ public class PacketSniffer {
         frame.getContentPane().add(pnlCenter, BorderLayout.CENTER);
         pnlCenter.setLayout(new BorderLayout(0, 0));
 
-       tableModel = new DefaultTableModel( /** вывод информации о перехваченном пакете */
+       tableModel = new DefaultTableModel( /** вывод колонок с дальнейшим записыванием информации */
                 new Object[][] {
                },
                 new String[] {
-                       "Type", "Src", "Dst","Data"
+                       "Number", "Type", "Src", "Dst","Data"
                 }
        );
-
-/** НЕ РАБОТАЕТ */
+       /** вывод колонок*/
        tblOutput = new JTable();
         tblOutput.addMouseListener(new MouseAdapter() {
             //@Override
@@ -301,15 +302,19 @@ public class PacketSniffer {
         txtData = new JTextArea();
         pnlData.add(txtData, BorderLayout.CENTER);
 // useless button
-      /**  JButton btnCloseData = new JButton("Close");
+        JButton btnCloseData = new JButton("Close"); /** кнопка Close позволяет очистить колонки*/
         btnCloseData.addMouseListener(new MouseAdapter() {
           //  @Override
             public void mousePressed(MouseEvent arg0) {
-                pnlData.setVisible(false);
+int temp1 = tableModel.getRowCount();
+for(int i = 0; i <= temp1; i++){
+                    tableModel.removeRow(i);}
+
+
             }
         });
         pnlData.add(btnCloseData, BorderLayout.EAST);
-        pnlData.setVisible(false); */
+        pnlData.setVisible(true);
         frame.getContentPane().add(lblFilePath, BorderLayout.SOUTH);
 
     }

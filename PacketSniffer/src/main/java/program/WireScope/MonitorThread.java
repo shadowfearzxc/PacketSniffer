@@ -54,7 +54,7 @@ public class MonitorThread extends Thread {
     }
 
     /**
-    заранее надо создать файл .pcap, на английском.
+    проверка на существование дамп файла + на англ языке
      */
     public void setFileOutput(File file) {
         this.file = file;
@@ -82,7 +82,7 @@ public class MonitorThread extends Thread {
                 dumper = handle.dumpOpen(file.getAbsolutePath());
             }
 
-            int num = 0; /** объявление переменной для количества пакетов */
+            int num = 0; /** объявление переменной для счетчика количества пакетов */
             while (running.get()) {
                 Packet packet = handle.getNextPacket();
 
@@ -92,7 +92,6 @@ public class MonitorThread extends Thread {
                     packetQueue.add(packet);
 
                     if (fileOutput) {
-                        assert dumper != null;
                         dumper.dump(packet, handle.getTimestamp());
                     }
 
@@ -100,7 +99,7 @@ public class MonitorThread extends Thread {
                     logger.debug(packet.toString());
 
                     num++;
-                    if (num >= 1000) { /** максимальное значение для перехвата12 количества пакетов */
+                    if (num >= 10000) { /** максимальное значение для перехвата количества пакетов */
                       //btnStart.setEnabled(true);
                       //btnStop.setEnabled(false);
                         break;
@@ -119,7 +118,6 @@ public class MonitorThread extends Thread {
             }
 
             if (fileOutput) {
-
                 dumper.close();
             }
             handle.close();

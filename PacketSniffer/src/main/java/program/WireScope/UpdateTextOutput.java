@@ -37,7 +37,7 @@ public class UpdateTextOutput extends Thread {
 
     @Override
     public void run() {
-int num = 0; /** счетчик пакето0в */
+int num = 0; /** счетчик пакетов */
         boolean changed = false;
 
         /** выполнение потока до тех пор, пока очередь не станет пустой*/
@@ -49,7 +49,7 @@ int num = 0; /** счетчик пакето0в */
 
                 /** не работает вывод в строки*/
                 while (!packetQueue.isEmpty()) {
-                    if (tableModel.getRowCount() > 1000) { /**после 1000 строки удаляется самая первая по циклу*/
+                    if (tableModel.getRowCount() > 10000) { /**после 1000 строки удаляется самая первая по циклу*/
                         tableModel.removeRow(0);
                     }
 
@@ -57,27 +57,27 @@ int num = 0; /** счетчик пакето0в */
                     Packet packet = packetQueue.poll();
                     num++;
 
-                    assert packet != null;
                     if (packet.contains(IpV4Packet.class)) {
                         IpV4Packet ip4v = packet.get(IpV4Packet.class); // IPv4
 
                         if (ip4v.getPayload().contains(DnsPacket.class)) {
                             DnsPacket dns = ip4v.getPayload().get(DnsPacket.class);
 
-                            tableModel.addRow(new Object[] { "DNS", ip4v.getHeader().getSrcAddr(),
+                            tableModel.addRow(new Object[] {num,   "DNS", ip4v.getHeader().getSrcAddr(),
                                     ip4v.getHeader().getDstAddr(), dns.toString() });
                          //   logger.info("" + packet);
                         } else if (ip4v.getPayload().contains(IcmpV4CommonPacket.class)) {
                             IcmpV4CommonPacket icmp = ip4v.getPayload().get(IcmpV4CommonPacket.class);
                           //  logger.info("" + packet);
 
-                            tableModel.addRow(new Object[] { "ICMP", ip4v.getHeader().getSrcAddr(),
+                            tableModel.addRow(new Object[] {num,   "ICMP", ip4v.getHeader().getSrcAddr(),
                                     ip4v.getHeader().getDstAddr(), icmp.toString() });
                           //  logger.info("" + packet);
 
                         } else {
-                            tableModel.addRow(new Object[] { "IPv4", ip4v.getHeader().getSrcAddr(),
+                            tableModel.addRow(new Object[] {num,   "IPv4", ip4v.getHeader().getSrcAddr(),
                                     ip4v.getHeader().getDstAddr(), ip4v.toString() });
+                        //   logger.info("ТИП - [IPv4] " + packet);
                           //  logger.info("" + packet);
 
                         }
@@ -88,30 +88,30 @@ int num = 0; /** счетчик пакето0в */
                         if (ip6v.getPayload().contains(DnsPacket.class)) {
                             DnsPacket dns = ip6v.getPayload().get(DnsPacket.class);
 
-                            tableModel.addRow(new Object[] { "DNS", ip6v.getHeader().getSrcAddr(),
+                            tableModel.addRow(new Object[] {num,   "DNS", ip6v.getHeader().getSrcAddr(),
                                     ip6v.getHeader().getDstAddr(), dns.toString() });
                           //  logger.info("" + packet);
                         } else if (ip6v.getPayload().contains(IcmpV4CommonPacket.class)) {
                             IcmpV4CommonPacket icmp = ip6v.getPayload().get(IcmpV4CommonPacket.class);
 
-                            tableModel.addRow(new Object[] { "ICMP", ip6v.getHeader().getSrcAddr(),
+                            tableModel.addRow(new Object[] {num,   "ICMP", ip6v.getHeader().getSrcAddr(),
                                     ip6v.getHeader().getDstAddr(), icmp.toString() });
                            // logger.info("" + packet);
 
                         } else {
-                            tableModel.addRow(new Object[] { "IPv6", ip6v.getHeader().getSrcAddr(),
+                            tableModel.addRow(new Object[] {num,   "IPv6", ip6v.getHeader().getSrcAddr(),
                                     ip6v.getHeader().getDstAddr(), ip6v.toString() });
                            // logger.info("" + packet);
                         }
                     } else if (packet.contains(ArpPacket.class)) { /** ARP низкий уровень пакета, не будет найдет из-за ipv4 ipv6*/
                         ArpPacket arp = packet.get(ArpPacket.class);
-                        tableModel.addRow(new Object[] { "ARP", arp.getHeader().getSrcHardwareAddr(),
+                        tableModel.addRow(new Object[] {num,  "ARP", arp.getHeader().getSrcHardwareAddr(),
                                 arp.getHeader().getDstHardwareAddr(), arp.toString() });
                        // logger.info("" + packet);
                     } else {
                        // logger.info("Неизвестный тип пакета ");
                     logger.info("\n  Пакет с номером [" + num + "] " + "\n  ТИП - [Неизвестный тип пакета] " + packet);
-                    tableModel.addRow(new Object[] {"UNKNOWN Type", packet.getHeader(), packet.getHeader(), packet.toString() } );
+                    tableModel.addRow(new Object[] {num, "UNKNOWN Type", packet.getHeader(), packet.getHeader(), packet.toString() } );
                     }
 
                     changed = true;
