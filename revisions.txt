@@ -14,6 +14,7 @@
 	~under packet that are dont output 
 	[*] Max count of packets found changed from 10000 to 2000
 	[*] class CombotItem : private string value -> make final
+	[*] Fixed 13 warnings
 	[+] Added a button "Clear", which clears the table of found packets
 	[+] Added a message box for button "Clear" if count rows = 0, displays an error window
 
