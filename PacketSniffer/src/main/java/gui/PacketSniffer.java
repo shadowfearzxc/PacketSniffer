@@ -23,21 +23,34 @@ import SnifferScope.MonitorThread;
 import SnifferScope.UpdateTextOutput;
 
 public class PacketSniffer {
-
+    //static Frame FirstFrame = new Frame();
+    //tatic String title = "PacketSniffer";
 
 
     final static Logger logger = LoggerFactory.getLogger(PacketSniffer.class);
     private List<PcapNetworkInterface> interfaces;
     private JFrame frame;
+
     private JTextField txtFilters;
     private JComboBox ddlInterfaces;
     private MonitorThread monitorThread;
-    private UpdateTextOutput updateTextOutputThread; /** выводы*/
+    private UpdateTextOutput updateTextOutputThread;
+    /**
+     * выводы
+     */
     //private boolean running;
     JPanel pnlData;
-    JButton btnStart, btnStop; /** кнопки старт-стоп*/
-    JCheckBox chkBoxDumpFile; /** чекбокс на включение дампа файлов*/
+    JButton btnStart, btnStop;
+    /**
+     * кнопки старт-стоп
+     */
+    JCheckBox chkBoxDumpFile;
+    /**
+     * чекбокс на включение дампа файлов
+     */
     JLabel lblFilePath = new JLabel("");
+
+
     JTextArea txtData;
 
     private LinkedBlockingQueue<Packet> packetQueue;
@@ -68,7 +81,7 @@ public class PacketSniffer {
         try {
             interfaces = org.pcap4j.core.Pcaps.findAllDevs();
             populateInterfaceList();
-        }catch (PcapNativeException e) {
+        } catch (PcapNativeException e) {
             //TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -119,6 +132,7 @@ public class PacketSniffer {
      */
     private void initialize() {
         frame = new JFrame();
+        frame.setTitle("PacketSniffer v1.0.11");
         frame.setBounds(100, 100, 708, 496); /** выставление начальных размеров окна */
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); /** операция закрытия */
         frame.getContentPane().setLayout(new BorderLayout(0, 0)); /** панель содержимого */
@@ -186,6 +200,18 @@ public class PacketSniffer {
 
         chkBoxDumpFile = new JCheckBox("Включить");
         /** выбор дамп файла */
+
+        JPanel panel_5 = new JPanel();
+        pnlSide.add(panel_5);
+        panel_5.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
+        //Font font = new Font("Inkulinati", Font.PLAIN, 11);
+      //  panel_5.setFont(font);
+
+        JLabel version = new JLabel("version : 1.0.11");
+       // panel_5.setForeground(Color.BLUE);
+        panel_5.add(version);
+
+
         chkBoxDumpFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 if (chkBoxDumpFile.isSelected()) {
@@ -219,9 +245,6 @@ public class PacketSniffer {
         frame.getContentPane().add(pnlSide, BorderLayout.WEST);
 
 
-
-
-
 /** не работает */
 /** ОТКЛЮЧЕНО */
         //
@@ -234,10 +257,10 @@ public class PacketSniffer {
         pnlCenter.setLayout(new BorderLayout(0, 0));
 
         tableModel = new DefaultTableModel( /** вывод колонок с дальнейшим записыванием информации */
-                new Object[][] {
+                new Object[][]{
                 },
-                new String[] {
-                        "Number", "Type", "Src", "Dst","Data"
+                new String[]{
+                        "Number", "Type", "Src", "Dst", "Data"
                 }
         );
         /** вывод колонок*/
@@ -267,14 +290,17 @@ public class PacketSniffer {
 
         txtData = new JTextArea();
         pnlData.add(txtData, BorderLayout.CENTER);
-// useless button
-        JButton btnCloseData = new JButton("Close"); /** кнопка Close позволяет очистить колонки*/
+
+        JButton btnCloseData = new JButton("Clear"); /** кнопка Close позволяет очистить колонки*/
         btnCloseData.addMouseListener(new MouseAdapter() {
             //  @Override
             public void mousePressed(MouseEvent arg0) {
-                int temp1 = tableModel.getRowCount();
-                for(int i = 0; i <= temp1; i++){
-                    tableModel.removeRow(i);}
+
+                if (tableModel.getRowCount() > 0) {
+                    tableModel.setRowCount(0);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Очищать нечего. Колонки и так пустые");
+                }
 
 
             }
@@ -286,4 +312,3 @@ public class PacketSniffer {
     }
 
 }
-

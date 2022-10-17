@@ -2,8 +2,8 @@ package gui;
 
 public class ComboItem
 {
-    private String key;
-    private String value;
+    private final String key;
+    private final String value;
 
     public ComboItem(String key, String value)
     {
