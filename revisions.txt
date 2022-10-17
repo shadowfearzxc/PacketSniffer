@@ -1,10 +1,26 @@
 > Java PacketSniffer revisions file.
 > [*] - Fixed/Changed/Updated, [+] - Added, [-] Removed.
 
--- 14.10.2022 1:46 PM (v1.0.2)
-    [*] private string Key -> make final
-    [*] fixed unknown types packets logger
+-- 17.10.2022 9:32 PM (version 1.0.11)
+	[+] Created an application using launch4j
+	switch to the branch : Application
+	[+] Added JLabel version
 
--- 14.10.2022 1:07 PM (v1.0.0)
+
+	[*] class UpdateTextOutput : in console output the found packets 
+	num + typeOfPacket(next -> TOP) + packet, 
+	but TOP (ipv6, ARP, icmp) dont displays in console, but you can add them using 
+	in class UpdateTextOutput > logger.info("your message(for example TOP)" + packet)
+	~under packet that are dont output 
+	[*] Max count of packets found changed from 10000 to 2000
+	[*] class CombotItem : private string value -> make final
+	[+] Added a button "Clear", which clears the table of found packets
+	[+] Added a message box for button "Clear" if count rows = 0, displays an error window
+
+-- 14.10.2022 1:46 PM (version 1.0.2)
+	[*] class ComboItem : private string Key -> make final
+        [*] Maven : fixed unknown types packets logger
+
+-- 14.10.2022 1:07 PM (version 1.0.0)
 	[*] First launch
 	Errors : ~101 warnings ):
