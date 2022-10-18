@@ -2,7 +2,9 @@
 My second course second semester project. 2022
 
 <img width="624" alt="mainMenu" src="https://user-images.githubusercontent.com/108304867/196364775-06270a79-1442-404c-ac0f-737467ea5055.png">
-<img width="624" alt="Sniffer" src="https://user-images.githubusercontent.com/108304867/196364906-2e1c78a9-7338-47bb-bbbd-1b38dd0ec25d.png"
+<img width="624" alt="Sniffer" src="https://user-images.githubusercontent.com/108304867/196364906-2e1c78a9-7338-47bb-bbbd-1b38dd0ec25d.png">
+<img width="624" alt="Sniffer" src="https://user-images.githubusercontent.com/108304867/196368882-41057972-ede1-4237-9aea-62c84046c938.png">
+this file .pcap you can open in WireShark app
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -21,7 +23,7 @@ git clone https://github.com/shadowfearzxc/PacketSniffer.git
 ## Technologies Used
 * Java
 * Java Swing
-* WinPCAP 4.1.2
+* WinPCAP 4.1.2 https://www.winpcap.org/
 * libpcap 1.1.1
 * pcap4j 1.7.3
      
