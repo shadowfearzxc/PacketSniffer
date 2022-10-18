@@ -16,7 +16,7 @@ This is a simple Java packet sniffer that uses the pcap4j library to promiscuous
 
 More information, all screenshots you can see in documentation.doc file
 
-git clone 
+git clone https://github.com/shadowfearzxc/PacketSniffer.git
 
 ## Technologies Used
 * Java
