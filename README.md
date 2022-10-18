@@ -2,7 +2,7 @@
 My second course second semester project. 2022
 
 <img width="624" alt="mainMenu" src="https://user-images.githubusercontent.com/108304867/196364775-06270a79-1442-404c-ac0f-737467ea5055.png">
-<img width="624" alt="authorized user menu" src="https://user-images.githubusercontent.com/108304867/195424326-7ebe9b5d-12b2-40d9-bbe5-8f30cf7af0d2.png"
+<img width="624" alt="Sniffer" src="https://user-images.githubusercontent.com/108304867/196364906-2e1c78a9-7338-47bb-bbbd-1b38dd0ec25d.png"
 
 ## Table of Contents
 * [General Info](#general-information)
