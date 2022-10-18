@@ -24,6 +24,15 @@ git clone
 * WinPCAP 4.1.2
 * libpcap 1.1.1
 * pcap4j 1.7.3
+     
+##### Platforms ######
+Should be compatible with multiple platforms but has only been tested on Windows 10
+     
+
+##### Others #####
+Pcap4J needs administrator/root privileges.
+Or, if on Linux, you can run Pcap4J with a non-root user by granting capabilities `CAP_NET_RAW` and `CAP_NET_ADMIN`
+to your java command by the following command: `setcap cap_net_raw,cap_net_admin=eip /path/to/java`
 
 ## Features
 * Packet Sniffer (IP4v, IP6v, DNS, ARP, ICMP)
