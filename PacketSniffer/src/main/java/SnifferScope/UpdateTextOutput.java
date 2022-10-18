@@ -12,12 +12,9 @@ import org.pcap4j.packet.IcmpV4CommonPacket;
 import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.IpV6Packet;
 import org.pcap4j.packet.Packet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 public class UpdateTextOutput extends Thread {
-
-    final static Logger logger = LoggerFactory.getLogger(UpdateTextOutput.class);
 
     volatile AtomicBoolean running = new AtomicBoolean();
     DefaultTableModel tableModel;
@@ -37,26 +34,27 @@ public class UpdateTextOutput extends Thread {
 
     @Override
     public void run() {
-        int num = 0; /** счетчик пакетов */
-        boolean changed = false;
+        int num = 0; // счетчик пакетов
+        boolean changed;
 
-        /** выполнение потока до тех пор, пока очередь не станет пустой*/
+        // выполнение потока до тех пор, пока очередь не станет пустой*/
         while (running.get() || !packetQueue.isEmpty()) {
             try {
                 changed = false;
 
 
 
-                /** не работает вывод в строки*/
+
                 while (!packetQueue.isEmpty()) {
-                    if (tableModel.getRowCount() > 10000) { /**после 10000 строки удаляется самая первая по циклу*/
+                    if (tableModel.getRowCount() > 10000) { //после 10000 строки удаляется самая первая по циклу*/
                         tableModel.removeRow(0);
                     }
 
-                    /** статические пакеты */
+                    // статические пакеты
                     Packet packet = packetQueue.poll();
                     num++;
 
+                    assert packet != null;
                     if (packet.contains(IpV4Packet.class)) {
                         IpV4Packet ip4v = packet.get(IpV4Packet.class); // IPv4
 
@@ -74,12 +72,10 @@ public class UpdateTextOutput extends Thread {
                         } else {
                             tableModel.addRow(new Object[] {num,   "IPv4", ip4v.getHeader().getSrcAddr(),
                                     ip4v.getHeader().getDstAddr(), ip4v.toString() });
-                            //   logger.info("ТИП - [IPv4] " + packet);
-
                         }
 
                     } else if (packet.contains(IpV6Packet.class)) {
-                        IpV6Packet ip6v = packet.get(IpV6Packet.class); /** Ipv6*/
+                        IpV6Packet ip6v = packet.get(IpV6Packet.class); // Ipv6*/
 
                         if (ip6v.getPayload().contains(DnsPacket.class)) {
                             DnsPacket dns = ip6v.getPayload().get(DnsPacket.class);
@@ -95,21 +91,18 @@ public class UpdateTextOutput extends Thread {
                             tableModel.addRow(new Object[] {num,   "IPv6", ip6v.getHeader().getSrcAddr(),
                                     ip6v.getHeader().getDstAddr(), ip6v.toString() });
                         }
-                    } else if (packet.contains(ArpPacket.class)) { /** ARP низкий уровень пакета, не будет найдет из-за ipv4 ipv6*/
+                    } else if (packet.contains(ArpPacket.class)) { // ARP низкий уровень пакета, не будет найдет из-за ipv4 ipv6*/
                         ArpPacket arp = packet.get(ArpPacket.class);
                         tableModel.addRow(new Object[] {num,  "ARP", arp.getHeader().getSrcHardwareAddr(),
                                 arp.getHeader().getDstHardwareAddr(), arp.toString() });
-                        // logger.info("" + packet);
                     } else {
-                        // logger.info("Неизвестный тип пакета ");
-                      //   logger.info("\n  Пакет с номером [" + num + "] " + "\n  ТИП - [Неизвестный тип пакета] " + packet);
-                       // tableModel.addRow(new Object[] {num, "UNKNOWN Type", packet.getHeader(), packet.getHeader(), packet.toString() } );
+                       tableModel.addRow(new Object[] {num, "UNKNOWN Type", packet.getHeader(), packet.getHeader(), packet.toString() } );
                     }
 
                     changed = true;
                 }
                 if (changed) {
-                    table.getParent().revalidate(); /** обновляет страницу, на гитхабе посмотреть решение*/
+                    table.getParent().revalidate(); // обновляет страницу, на гитхабе посмотреть решение*/
                 }
                 try {
                     Thread.sleep(250);
@@ -123,5 +116,4 @@ public class UpdateTextOutput extends Thread {
             }
         }
     }
-
 }
