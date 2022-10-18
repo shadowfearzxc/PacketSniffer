@@ -1,26 +1,44 @@
 > Java PacketSniffer revisions file.
 > [*] - Fixed/Changed/Updated, [+] - Added, [-] Removed.
 
--- 17.10.2022 9:32 PM (version 1.0.11)
+-- 18.10.2022 8:58 AM (Application version )
+    Application was updated to
+    [*] class PacketSniffer : private LinkedBlockingQueue<Packet> packetQueue ->
+    Converted to local variable in method StartMonitoring()
+    [*] class PacketSniffer : Anonymous new ActionListener() replaced with lambda
+    [*] class PacketSniffer : Anonymous Runnable() replaced with lambda
+
+    [+] Added a filter for search packets
+        using : https://biot.com/capstats/bpf.html
+
+    [*] class UpdateTextOutput : Fixed all warnings
+    [+] class UpdateTextOutput : added  [assert packet != null;]
+    [-] class UpdateTextOutput : removed useless library (slf4j.Logger; and slf4j.LoggerFactory;)
+
+    [*] class MonitorThread : Fixed all warnings
+    [+] class MonitorThread : added  [assert dumper != null;]
+    [-] class MonitorThread : removed all not used library's
+
+-- 17.10.2022 9:32 PM (Application version 1.0.11)
 	[+] Created an application using launch4j
 	switch to the branch : Application
 	[+] Added JLabel version
-
-
 	[*] class UpdateTextOutput : in console output the found packets 
 	num + typeOfPacket(next -> TOP) + packet, 
-	but TOP (ipv6, ARP, icmp) dont displays in console, but you can add them using 
-	in class UpdateTextOutput > logger.info("your message(for example TOP)" + packet)
-	~under packet that are dont output 
+	but TOP (ipv6, ARP, icmp) don't display in console, but you can add them using
+	in class UpdateTextOutput >
+	init -> final static Logger logger = LoggerFactory.getLogger(UpdateTextOutput.class); in public class UpdateTextOutput
+	        logger.info("your message(for example TOP)" + packet)
+	~under packet that are don't output
 	[*] Max count of packets found changed from 10000 to 2000
-	[*] class CombotItem : private string value -> make final
+	[*] class ComboItem : private string value -> make final
 	[*] Fixed 13 warnings
 	[+] Added a button "Clear", which clears the table of found packets
 	[+] Added a message box for button "Clear" if count rows = 0, displays an error window
 
 -- 14.10.2022 1:46 PM (version 1.0.2)
 	[*] class ComboItem : private string Key -> make final
-        [*] Maven : fixed unknown types packets logger
+    [*] Maven : fixed unknown types packets logger
 
 -- 14.10.2022 1:07 PM (version 1.0.0)
 	[*] First launch
