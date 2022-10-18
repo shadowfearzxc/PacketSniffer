@@ -1,20 +1,19 @@
 > Java PacketSniffer revisions file.
 > [*] - Fixed/Changed/Updated, [+] - Added, [-] Removed.
 
--- 18.10.2022 8:58 AM (Application version )
-    Application was updated to
+-- 18.10.2022 8:58 AM (Application version 1.2.5)
+    Application was updated to v1.2.5
+    [+] Added a filter for search packets
+        using : https://biot.com/capstats/bpf.html
+
     [*] class PacketSniffer : private LinkedBlockingQueue<Packet> packetQueue ->
     Converted to local variable in method StartMonitoring()
     [*] class PacketSniffer : Anonymous new ActionListener() replaced with lambda
     [*] class PacketSniffer : Anonymous Runnable() replaced with lambda
-
-    [+] Added a filter for search packets
-        using : https://biot.com/capstats/bpf.html
-
+    [*] class PacketSniffer : Fixed 24 warnings
     [*] class UpdateTextOutput : Fixed all warnings
     [+] class UpdateTextOutput : added  [assert packet != null;]
     [-] class UpdateTextOutput : removed useless library (slf4j.Logger; and slf4j.LoggerFactory;)
-
     [*] class MonitorThread : Fixed all warnings
     [+] class MonitorThread : added  [assert dumper != null;]
     [-] class MonitorThread : removed all not used library's
