@@ -21,16 +21,16 @@ git clone
 ## Technologies Used
 * Java
 * Java Swing
-* WinPCAP
-* libpcap
-* pcap4j
+* WinPCAP 4.1.2
+* libpcap 1.1.1
+* pcap4j 1.7.3
 
 ## Features
-*
-*
-*
-*
-*
+* Packet Sniffer (IP4v, IP6v, DNS, ARP, ICMP)
+* Export .pcap filer
+* Filters 
+* Choose of adapters
+* Full information about packet
 
 ## Requirements
 * Java 8 or later
