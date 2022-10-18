@@ -36,7 +36,7 @@ to your java command by the following command: `setcap cap_net_raw,cap_net_admin
 
 ## Features
 * Packet Sniffer (IP4v, IP6v, DNS, ARP, ICMP)
-* Export .pcap filer
+* Export .pcap file
 * Filters 
 * Choose of adapters
 * Full information about packet
